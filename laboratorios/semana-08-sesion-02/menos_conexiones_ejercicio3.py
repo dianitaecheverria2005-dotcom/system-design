@@ -14,9 +14,23 @@ class BalanceadorMenosConexiones:
         self.servidores = servidores
 
     def enviar(self, duracion):
-        # TODO: elige, entre los servidores sanos que todavia pueden
-        # atender, el que tiene menos conexiones activas en este momento.
-        # Si hay empate, gana el que aparece primero en la lista.
-        # Enviale la solicitud y devuelve su nombre. Si ningun servidor
-        # puede atenderla, devuelve None.
-        raise NotImplementedError
+
+        mejor_servidor = None
+
+        for servidor in self.servidores:
+
+            if servidor.health_check():
+
+                if servidor.conexiones_activas() < servidor.capacidad:
+
+                    if mejor_servidor is None:
+                        mejor_servidor = servidor
+
+                    elif servidor.conexiones_activas() < mejor_servidor.conexiones_activas():
+                        mejor_servidor = servidor
+
+        if mejor_servidor is not None:
+            if mejor_servidor.atender(duracion):
+                return mejor_servidor.nombre
+
+        return None
