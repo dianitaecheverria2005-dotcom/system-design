@@ -17,11 +17,19 @@ from repositorio import RepositorioDeReservas
 
 class ServicioSinCache:
     def __init__(self, repositorio):
-        self.repositorio = repositorio
+        self.fallos = 0
 
     def disponibilidad(self, cancha, fecha):
-        return self.repositorio.consultar_disponibilidad(cancha, fecha)
+        clave = (cancha, fecha)
+        if clave in self.cache:
+            self.aciertos += 1
+            return self.cache[clave]
+            
+        self.fallos += 1
+        disponible = self.repositorio.consultar_disponibilidad(cancha, fecha)
+        self.cache[clave] = disponible
 
+        return disponible
 
 class ServicioConCacheAside:
     def __init__(self, repositorio):
