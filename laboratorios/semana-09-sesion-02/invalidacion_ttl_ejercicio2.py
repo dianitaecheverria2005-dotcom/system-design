@@ -10,6 +10,7 @@ dependen de que existan exactamente asi.
 """
 
 
+
 class ServicioConInvalidacionYTTL:
     def __init__(self, repositorio, reloj, ttl):
         self.repositorio = repositorio
@@ -20,19 +21,29 @@ class ServicioConInvalidacionYTTL:
         self.fallos = 0
 
     def disponibilidad(self, cancha, fecha):
-        # TODO: cache-aside como en el Ejercicio 1, con dos cambios:
-        # - Cada entrada de self.cache guarda una tupla
-        #   (libres, instante_en_que_se_guardo), con el instante tomado de
-        #   self.reloj.ahora().
-        # - Una entrada solo cuenta como acierto si tiene menos de
-        #   self.ttl segundos. Si ya vencio, es un fallo: consulta el
-        #   repositorio y reemplaza la entrada.
-        raise NotImplementedError
+        clave = (cancha, fecha)
+
+        if clave in self.cache:
+            libres, instante = self.cache[clave]
+
+            if self.reloj.ahora() - instante < self.ttl:
+                self.aciertos += 1
+                return libres
+
+        self.fallos += 1
+        libres = self.repositorio.consultar_disponibilidad(cancha, fecha)
+        self.cache[clave] = (libres, self.reloj.ahora())
+        return libres
 
     def reservar(self, cancha, fecha, hora):
-        # TODO: verifica la disponibilidad directamente en el repositorio
-        # (nunca en el cache: esta respuesta decide una escritura). Si la
-        # hora no esta libre, devuelve False. Si esta libre, registra la
-        # reserva en el repositorio, invalida la entrada (cancha, fecha)
-        # del cache, aunque no exista, y devuelve True.
-        raise NotImplementedError
+        libres = self.repositorio.consultar_disponibilidad(cancha, fecha)
+
+        if hora not in libres:
+            return False
+
+        self.repositorio.registrar_reserva(cancha, fecha, hora)
+
+        clave = (cancha, fecha)
+        self.cache.pop(clave, None)
+
+        return True
