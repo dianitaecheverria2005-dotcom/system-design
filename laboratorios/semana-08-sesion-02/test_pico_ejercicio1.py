@@ -14,3 +14,4 @@ def test_si_el_unico_servidor_cae_no_se_atiende_ninguna():
     grande = Servidor("grande", 300)
     grande.caer()
     assert simular_pico(grande, 250, 5) == (0, 250)
+

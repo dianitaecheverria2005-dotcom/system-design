@@ -10,7 +10,6 @@ dependen de que existan exactamente asi.
 """
 
 
-c
 class DisponibilidadWriteThrough:
     def __init__(self, repositorio):
         self.repositorio = repositorio

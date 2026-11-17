@@ -16,7 +16,7 @@ from repositorio import RepositorioDeReservas
 
 
 class ServicioSinCache:
-    def __init__(self, repositorio):
+    def _init_(self, repositorio):
         self.repositorio = repositorio
 
     def disponibilidad(self, cancha, fecha):
@@ -24,25 +24,30 @@ class ServicioSinCache:
 
 
 class ServicioConCacheAside:
-    def __init__(self, repositorio):
+    def _init_(self, repositorio):
         self.repositorio = repositorio
         self.cache = {}
         self.aciertos = 0
         self.fallos = 0
 
     def disponibilidad(self, cancha, fecha):
-       clave = (cancha, fecha)
+        # TODO: cache-aside. Usa la tupla (cancha, fecha) como clave de
+        # self.cache. Si la clave ya esta, cuenta un acierto y devuelve lo
+        # guardado sin tocar el repositorio. Si no esta, cuenta un fallo,
+        # consulta el repositorio, guarda la respuesta en self.cache y
+        # devuelvela.
+        clave = (cancha, fecha)
 
-    if clave in self.cache:
-        self.aciertos += 1
-        return self.cache[clave]
+        if clave in self.cache:
+            self.aciertos += 1
+            return self.cache[clave]
 
-    self.fallos += 1
+        self.fallos += 1
 
-    disponible = self.repositorio.consultar_disponibilidad(cancha, fecha)
+        disponible = self.repositorio.consultar_disponibilidad(cancha, fecha)
+        self.cache[clave] = disponible
 
-    self.canche[clave] = disponibilidad
-    return disponible
+        return disponible
 
 
 def medir(servicio, repeticiones):
@@ -52,7 +57,7 @@ def medir(servicio, repeticiones):
     return time.perf_counter() - inicio
 
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     sin_cache = ServicioSinCache(RepositorioDeReservas())
     print("Sin cache, 50 consultas:", round(medir(sin_cache, 50), 3), "segundos")
 
