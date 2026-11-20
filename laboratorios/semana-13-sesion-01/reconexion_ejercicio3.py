@@ -34,5 +34,56 @@ Esta vez no hay codigo de partida. Corre las pruebas con:
     pytest test_reconexion_ejercicio3.py
 """
 
+
 from canales_ejercicio1 import Canales
-# TODO: escribe aqui la clase CanalConHistorial.
+
+
+class CanalConHistorial(Canales):
+    def __init__(self, historial=50):
+        super().__init__()
+        self.historial = historial
+        self.numeros = {}
+        self.mensajes = {}
+
+    def publicar(self, tema, mensaje):
+        numero = self.ultimo_numero(tema) + 1
+        self.numeros[tema] = numero
+
+        texto = str(numero) + " " + mensaje
+
+        if tema not in self.mensajes:
+            self.mensajes[tema] = []
+
+        self.mensajes[tema].append((numero, texto))
+
+        if self.historial > 0:
+            self.mensajes[tema] = self.mensajes[tema][-self.historial:]
+        else:
+            self.mensajes[tema] = []
+
+        super().publicar(tema, texto)
+
+        return numero
+
+    def ultimo_numero(self, tema):
+        return self.numeros.get(tema, 0)
+
+    def reconectar(self, tema, conexion, ultimo_visto):
+        ultimo = self.ultimo_numero(tema)
+
+        if ultimo_visto > ultimo:
+            raise ValueError("numero desconocido")
+
+        guardados = self.mensajes.get(tema, [])
+
+        if ultimo_visto < ultimo and (
+            not guardados or ultimo_visto + 1 < guardados[0][0]
+        ):
+            conexion.enviar("recargar")
+
+        else:
+            for numero, texto in guardados:
+                if numero > ultimo_visto:
+                    conexion.enviar(texto)
+
+        self.suscribir(tema, conexion)
