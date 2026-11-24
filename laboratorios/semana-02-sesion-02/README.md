@@ -12,7 +12,7 @@ Esta sesión no tiene código. El laboratorio es este documento: lo llenas duran
 
 De los 5 retos que menciona el artículo, ¿cuál te parece el más fácil de subestimar si nunca has levantado requerimientos antes? Una frase basta.
 
-_(espacio para tu respuesta)_
+El mas facil de subestimar en mi opinión es la ambiguedad o falta de información. AL principio del proyecto se puede creer que se tienen claros los objetivos del stakeholder, pero al avanzar es muy fácil llegar a conclusiones erróneas o confundir lo que realmente se quería decir con algún requerimiento si no se implementan las herramientas de visualización y prototipado correctamente. 
 
 ## El caso de hoy: una entrevista mal conducida
 
@@ -34,12 +34,12 @@ Cliente: Ok...
 ## Ejercicio 1: qué salió mal
 Antes de que yo revise cada intercambio: marca, línea por línea, cuáles preguntas del Analista te parecen problemáticas y por qué.
 
-_(tus respuestas)_
+El analista empezó con preguntas cerradas la entrevista, mientras que debió haber empezado preguntando los problemas que tenía el cliente con la aplicación en ese momento y partir desde allí con preguntas que validen los requerimientos verificables: "¿Qupe tan rápida debe ser esta aplicación? Por ejemplo, no debe demorar más de dos segundos." Además, debió proponer diferentes formas del inicio de sesión para verificar que el cliente esté satisfecho con un login con google y no quiera cambiar este requerimiento más adelante. 
 
 ## Ejercicio 2: de ambiguo a verificable
 Antes de que yo lo resuelva: toma el requerimiento "el sistema debe soportar muchos usuarios al mismo tiempo" (extraído de la transcripción) y anota qué información falta para que alguien pueda comprobar, después de construido el sistema, si ese requerimiento se cumplió o no.
 
-_(tu respuesta)_
+El analista acept+o un requerimiento ambiguo cuando el cliente solo describió la palabra "bastantes." Debió haber preguntado un n+umero aproxic¿mado que el stakeholder consideraría muchos usuarios, para que así, al programar la aplicación, se realice es testeo de ella con el número que el cliente propuso y verificar que se cumplió. Además, debió preguntar en qué momento del día es que los usuarios ingresan más al sistema y que debería suceder con este si se super este número.
 
 ## Ejercicio 3: elicitación simulada en parejas
 

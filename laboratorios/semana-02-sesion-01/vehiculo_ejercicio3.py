@@ -11,22 +11,17 @@ tests dependen de que existan exactamente asi.
 
 
 class ComportamientoMover:
-    """Cualquier comportamiento de movimiento implementa mover()."""
-
     def mover(self):
         raise NotImplementedError
-
 
 class ConducirPorCarretera(ComportamientoMover):
     def mover(self):
-        # TODO 1: retorna el string "Conduciendo por carretera."
-        raise NotImplementedError
+        print("Conduciendo por carretera")
 
 
 class NavegarPorAgua(ComportamientoMover):
     def mover(self):
-        # TODO 2: retorna el string "Navegando por agua."
-        raise NotImplementedError
+        print("Navegando por agua.")
 
 
 class Vehiculo:
@@ -39,16 +34,13 @@ class Vehiculo:
 
 class Auto(Vehiculo):
     def __init__(self):
-        # TODO 3: llama a super().__init__(...) con el comportamiento
-        # de conducir por carretera.
-        raise NotImplementedError
-
+        mueve_por_carretera = ConducirPorCarretera()
+        super().__init__(mueve_por_carretera)
 
 class Bote(Vehiculo):
     def __init__(self):
-        # TODO 4: llama a super().__init__(...) con el comportamiento
-        # de navegar por agua.
-        raise NotImplementedError
+        mueve_por_agua = NavegarPorAgua()
+        super().__init__(mueve_por_agua)
 
 
 # TODO 5: la prueba de fuego del patron. Un avion no conduce ni navega:
@@ -60,3 +52,21 @@ class Bote(Vehiculo):
 # ConducirPorCarretera, NavegarPorAgua, Vehiculo, Auto, Bote) debe cambiar
 # una sola linea para que Avion funcione. Si tuviste que tocar alguna,
 # algo en tu diseno todavia depende de herencia en vez de composicion.
+
+class VuelaPorCielo(ComportamientoMover):
+    def mover(self):
+        print("Vuela por los cielos!")
+
+class Avion(Vehiculo):
+    def __init__(self):
+        vuela_por_aire = VuelaPorCielo()
+        super().__init__(vuela_por_aire)
+
+if __name__ == "__main__":
+    auto = Auto()
+    bote = Bote()
+    avion = Avion()
+
+    auto.mover()
+    bote.mover()
+    avion.mover()

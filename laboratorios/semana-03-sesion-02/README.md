@@ -12,17 +12,17 @@ Esta sesión no tiene código. Seguimos con el sistema de reservas de canchas de
 
 Según el artículo, ¿qué se pierde exactamente cuando la lógica de una regla de negocio vive fuera de la clase a la que pertenece, en vez de dentro de ella?
 
-_(tu respuesta)_
+Se pierde la encapsulación del comportamiento y la capacidad del objeto de poder garantizar sea válido por sí mismo. Es decir, cualquier código externo puede modifiar el estado interno del modelo de dominio y no existen funciones que validen que el objeto sea válido.
 
 ## Ejercicio 1: la misma regla, anémica y rica
 Antes de que yo lo resuelva: la clase `Reserva` necesita saber si se solapa con otra reserva de la misma cancha. En un modelo anémico, ¿dónde viviría esa lógica si no dentro de `Reserva`?
 
-_(tu respuesta)_
+En un servicio o clase aparte que lee los atributos de Reserva uno por uno.
 
 ## Ejercicio 2: agregar la regla de prioridad
 Antes de que yo lo resuelva: ¿qué necesita saber la clase `EquipoOficial` para poder decidir, ella misma, si tiene prioridad a una hora dada?
 
-_(tu respuesta)_
+Necesita saber el horario de prioridad, es decir, en qupe horas se puede realizar la reserva con rpioridad y la hora en la que se quiere realizar esta reserva para ver si concuerda con las reglas de reserva oficial. 
 
 ## Ejercicio 3: modelo de dominio completo y validación
 ### Parte A: construir el modelo

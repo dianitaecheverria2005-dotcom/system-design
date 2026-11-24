@@ -15,6 +15,7 @@ class ComportamientoVuelo():
 class VuelaConAlas(ComportamientoVuelo):
     def volar(self):
         print("Volando con alas")
+
 class NoVuela(ComportamientoVuelo):
     def volar(self):
         print("No vuela")
@@ -30,6 +31,10 @@ class GraznidoNormal(ComportamientoGraznar):
 class GraznidoDeGoma(ComportamientoGraznar):
     def graznar(self):
         print('Chirrido de goma')
+
+class Silencioso(ComportamientoGraznar):
+    def graznar(self):
+        print('...')
 
 class Pato:
     def __init__(self, comportamiento_vuelo, comportamiento_graznido):
@@ -57,6 +62,18 @@ class PatoDeGoma(Pato):
         no_vuela = NoVuela()
         granizo_de_goma = GraznidoDeGoma()
         super().__init__(no_vuela, granizo_de_goma)
+
+class PatoDeCarton(Pato):
+    def __init__(self):
+        no_vuela = NoVuela()
+        silencio = Silencioso()
+
+        super().__init__(no_vuela, silencio)
+        self.muerte = muerte
+
+        def deshace_en_lluvia(self):
+            self.muerte.deshace_en_lluvia()
+
 
 
 if __name__ == "__main__":

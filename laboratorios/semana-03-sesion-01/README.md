@@ -59,7 +59,7 @@ veces en el mismo día: el sistema rechaza la segunda solicitud.
 
 ¿Qué está mal en la Versión 1, más allá de los colores de los botones?
 
-_(tu respuesta)_
+El diagrama especifica detalles de la interfa, lo que puede generar confusion, ya que en un diagrama de casos de uso no es drecomendable incluir detalles técnicos, además, no especifica el rol del cliente. "Usuario" es muy vago y no dice nada acerca de lo que el cliente puede hacer en el sistema. Por último, no declara el estado inicial del sistema ni los flujos alternos que podrían ocurrir para completar el cuadro. 
 
 ## Ejercicio 1: identificar los errores y reescribir
 Antes de que yo revise cada línea de la Versión 1: lista, paso por paso, qué le sobra o le falta comparada con la Versión 2.
@@ -69,7 +69,7 @@ _(tu respuesta)_
 ## Ejercicio 2: un caso de uso nuevo
 Antes de que yo lo escriba: ¿qué debería pasar si un estudiante intenta cancelar una reserva faltando menos de 2 horas para el inicio? Escribe tu propia hipótesis de flujo alterno.
 
-_(tu respuesta)_
+3c. El Estudiange intenta cancelar la reserva con menos de 2 horas de anticipación: El sistema registra esa cancelación bajo la categoría de "no-show."
 
 ## Ejercicio 3: caso de uso de prioridad
 En la Sesión 2 levantamos un requerimiento que todavía no se ha convertido en caso de uso: los equipos oficiales de la universidad pueden reservar con prioridad automática antes de las 6pm.
@@ -79,17 +79,21 @@ Documenta el caso de uso completo "Reservar con prioridad de equipo oficial", co
 ```
 Caso de uso: Reservar con prioridad de equipo oficial
 
-Actor:
+Actor: El estudiante.
 
-Precondiciones:
+Precondiciones: el estudiante tiene una cuenta activa identificada por el sistema como perteneciente a un equipo oficial de la universidad y ha iniciado sesión.
 
 Flujo principal:
-1.
-2.
-3.
+Flujo principal:
+1. El estudiante selecciona una cancha, una fecha y un horario disponible.
+2. El sistema verifica que el horario elegido está disponible para esa cancha y que la reserva se esté realizando antes de las 6pm.
+3. El sistema registra la reserva a nombre del estudiante.
+4. El sistema confirma la reserva al estudiante.
 
 Flujos alternos:
-```
+3a. La cancha y hora han sido reservados por otro estudiante: El sistema toma la reserva del equipo especial como prioridad y cancela la reserva del estudiante anterior por esta.
+3b. El estudiante intenta reservar la misma cancha y el mismo horario dos
+veces en el mismo día: el sistema rechaza la segunda solicitud.
 
 Necesitas al menos 2 flujos alternos. Uno de ellos debe cubrir qué pasa si un estudiante individual ya había reservado ese horario antes de las 6pm, y ahora un equipo oficial pide el mismo horario con prioridad.
 
