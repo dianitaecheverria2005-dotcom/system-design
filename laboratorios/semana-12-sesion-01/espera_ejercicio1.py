@@ -25,7 +25,7 @@ from reservas import CalendarioDeCancha, FranjaHoraria
 SEGUNDO_DE_LA_CANCELACION = 5500
 
 
-# ---------------------------------------------------------------- Parte A
+# Parte A
 
 def simular_consultas(intervalo_segundos):
     calendario = CalendarioDeCancha("cancha-1", "2026-11-10")
@@ -41,24 +41,27 @@ def simular_consultas(intervalo_segundos):
         segundo = segundo + intervalo_segundos
 
 
-# ---------------------------------------------------------------- Parte B
+# Parte B
 
 class ObservadorDeCalendario:
-    """Lo que el calendario sabe de quien se suscribe: que tiene este metodo."""
-
     def al_liberarse(self, cancha, franja):
         raise NotImplementedError
 
 
 class CalendarioObservable(CalendarioDeCancha):
-    # TODO 1: en __init__, ademas de lo que hace CalendarioDeCancha, una
-    # lista vacia de observadores. Escribe suscribir(observador), que lo
-    # agrega a esa lista.
+    def __init__(self, cancha, fecha):
+        super().__init__(cancha, fecha)
+        self.observadores = []
 
-    # TODO 2: sobrescribe cancelar. Guarda la franja de la reserva, cancela
-    # como lo hace CalendarioDeCancha, y despues llama al_liberarse(cancha,
-    # franja) de cada observador, en el orden en que se suscribieron.
-    pass
+    def suscribir(self, observador):
+        self.observadores.append(observador)
+
+    def cancelar(self, id_reserva):
+        franja = self.franja_de(id_reserva)
+        super().cancelar(id_reserva)
+
+        for observador in self.observadores:
+            observador.al_liberarse(self.cancha, franja)
 
 
 class ListaDeEspera(ObservadorDeCalendario):
@@ -67,13 +70,17 @@ class ListaDeEspera(ObservadorDeCalendario):
         self.esperando = {}
 
     def anotar(self, estudiante, franja):
-        # TODO 3: agrega al estudiante al final de la lista de esa franja
-        # (self.esperando[franja] es una lista). Despues escribe
-        # al_liberarse: si alguien espera esa franja, saca al primero de la
-        # lista y le envia, con el notificador:
-        #     "Se libero cancha-1 el 2026-11-10 de 18 a 19"
-        # Si nadie la espera, no hace nada.
-        raise NotImplementedError
+        if franja not in self.esperando:
+            self.esperando[franja] = []
+
+        self.esperando[franja].append(estudiante)
+
+    def al_liberarse(self, cancha, franja):
+        if franja in self.esperando:
+            if len(self.esperando[franja]) > 0:
+                estudiante = self.esperando[franja].pop(0)
+                texto = f"Se libero {cancha} el {franja.fecha} de {franja.inicio} a {franja.fin}"
+                self.notificador.enviar(estudiante, texto)
 
 
 if __name__ == "__main__":
